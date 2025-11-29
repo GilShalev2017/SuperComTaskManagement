@@ -73,7 +73,7 @@ artifacts/
 *.mdf
 *.ldf
 *.ndf
-Migrations/
+##Migrations/
 
 ## Rider
 .idea/
