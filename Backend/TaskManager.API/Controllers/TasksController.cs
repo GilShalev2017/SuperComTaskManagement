@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Core.DTOs;
-using TaskManager.Data.Repositories;
+using TaskManager.Data.UnitOfWork;
 
 namespace TaskManager.API.Controllers
 {

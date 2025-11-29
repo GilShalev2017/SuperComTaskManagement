@@ -1,10 +1,12 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 using Serilog;
 using TaskManager.API.Validators;
 using TaskManager.Core.DTOs;
 using TaskManager.Data;
-using TaskManager.Data.Repositories;
+using TaskManager.Data.UnitOfWork;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +21,23 @@ builder.Host.UseSerilog();
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-builder.Services.AddOpenApi();
+
+// Swagger/OpenAPI
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Task Manager API",
+        Version = "v1",
+        Description = "Full-stack task management application API",
+        Contact = new OpenApiContact
+        {
+            Name = "Task Manager",
+            Email = "support@taskmanager.com"
+        }
+    });
+});
+
 
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -40,7 +57,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000")
+            policy.WithOrigins(
+                    "http://localhost:3000",
+                    "https://localhost:3000"
+                  )
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -48,16 +68,19 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Task Manager API v1");
+        options.RoutePrefix = "swagger";
+        options.DocumentTitle = "Task Manager API Documentation";
+    });
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("AllowReactApp");
 
 // Global error handling middleware
@@ -75,6 +98,7 @@ app.Use(async (context, next) =>
     }
 });
 
+app.UseAuthorization();
 app.MapControllers();
 
 // Apply migrations and seed data
@@ -93,5 +117,3 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
-
-

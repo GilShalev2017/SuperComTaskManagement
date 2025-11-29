@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TaskManager.API.Controllers;
 using TaskManager.Core.DTOs;
-using TaskManager.Data.Repositories;
 using FluentValidation.Results;
+using TaskManager.Data.UnitOfWork;
 
 namespace TaskManager.Tests.Controllers
 {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Data.Repositories;
 
-namespace TaskManager.Data.Repositories
+namespace TaskManager.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

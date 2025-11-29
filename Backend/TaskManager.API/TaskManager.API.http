@@ -1,6 +1,58 @@
-@TaskManager.API_HostAddress = http://localhost:5168
+@TaskManager.API_HostAddress = https://localhost:7001
 
-GET {{TaskManager.API_HostAddress}}/weatherforecast/
+### Get all tasks
+GET {{TaskManager.API_HostAddress}}/api/tasks
 Accept: application/json
+
+###
+
+### Get task by ID
+GET {{TaskManager.API_HostAddress}}/api/tasks/1
+Accept: application/json
+
+###
+
+### Get all tags
+GET {{TaskManager.API_HostAddress}}/api/tags
+Accept: application/json
+
+###
+
+### Create new task
+POST {{TaskManager.API_HostAddress}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Test Task",
+  "description": "This is a test task",
+  "dueDate": "2024-12-31T23:59:59",
+  "priority": 2,
+  "fullName": "John Doe",
+  "telephone": "123-456-7890",
+  "email": "john.doe@example.com",
+  "tagIds": [1, 2]
+}
+
+###
+
+### Update task
+PUT {{TaskManager.API_HostAddress}}/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Updated Task",
+  "description": "Updated description",
+  "dueDate": "2024-12-31T23:59:59",
+  "priority": 3,
+  "fullName": "Jane Doe",
+  "telephone": "098-765-4321",
+  "email": "jane.doe@example.com",
+  "tagIds": [1, 3]
+}
+
+###
+
+### Delete task
+DELETE {{TaskManager.API_HostAddress}}/api/tasks/1
 
 ###

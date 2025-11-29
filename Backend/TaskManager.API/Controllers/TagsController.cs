@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Models;
-using TaskManager.Data.Repositories;
+using TaskManager.Data.UnitOfWork;
 
 namespace TaskManager.API.Controllers
 {
