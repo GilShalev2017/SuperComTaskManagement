@@ -115,13 +115,16 @@ namespace TaskManager.Tests.Controllers
                 TagIds = new List<int> { 1 }
             };
 
+            // Validator returns valid
             var validationResult = new ValidationResult();
             _mockCreateValidator.Setup(v => v.ValidateAsync(createDto, default))
                 .ReturnsAsync(validationResult);
 
+            // All tags exist
             _mockUnitOfWork.Setup(u => u.Tags.ExistsAsync(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
+            // Mock adding task
             var createdTask = new Core.Models.Task
             {
                 Id = 1,
@@ -131,14 +134,24 @@ namespace TaskManager.Tests.Controllers
                 FullName = createDto.FullName,
                 Email = createDto.Email,
                 Telephone = createDto.Telephone,
-                TaskTags = new List<Core.Models.TaskTag>()
+                TaskTags = new List<Core.Models.TaskTag>() // initially empty
             };
 
             _mockUnitOfWork.Setup(u => u.Tasks.AddAsync(It.IsAny<Core.Models.Task>()))
                 .ReturnsAsync(createdTask);
 
-            _mockUnitOfWork.Setup(u => u.Tasks.GetTaskWithTagsByIdAsync(1))
-                .ReturnsAsync(createdTask);
+            // Mock GetTaskWithTagsByIdAsync to return Task with proper Tag objects
+            _mockUnitOfWork.Setup(u => u.Tasks.GetTaskWithTagsByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync((int id) =>
+                {
+                    createdTask.TaskTags = createDto.TagIds.Select(tagId => new Core.Models.TaskTag
+                    {
+                        TaskId = createdTask.Id,
+                        TagId = tagId,
+                        Tag = new Core.Models.Tag { Id = tagId, Name = $"Tag{tagId}" }
+                    }).ToList();
+                    return createdTask;
+                });
 
             // Act
             var result = await _controller.CreateTask(createDto);
@@ -146,7 +159,12 @@ namespace TaskManager.Tests.Controllers
             // Assert
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             var returnValue = Assert.IsType<TaskDto>(createdResult.Value);
+
             Assert.Equal("New Task", returnValue.Title);
+            Assert.Equal(createDto.FullName, returnValue.FullName);
+            Assert.Single(returnValue.Tags);
+            Assert.Equal(1, returnValue.Tags[0].Id);
+            Assert.Equal("Tag1", returnValue.Tags[0].Name);
         }
 
         [Fact]
@@ -164,6 +182,7 @@ namespace TaskManager.Tests.Controllers
                 TagIds = new List<int> { 1 }
             };
 
+            // Existing task before update
             var existingTask = new Core.Models.Task
             {
                 Id = 1,
@@ -173,18 +192,50 @@ namespace TaskManager.Tests.Controllers
                 FullName = "John Doe",
                 Email = "john@example.com",
                 Telephone = "1234567890",
-                TaskTags = new List<Core.Models.TaskTag>()
+                TaskTags = new List<Core.Models.TaskTag>
+        {
+            new Core.Models.TaskTag
+            {
+                TaskId = 1,
+                TagId = 1,
+                Tag = new Core.Models.Tag { Id = 1, Name = "Tag1" }
+            }
+        }
             };
 
+            // Validator returns valid
             var validationResult = new ValidationResult();
             _mockUpdateValidator.Setup(v => v.ValidateAsync(updateDto, default))
                 .ReturnsAsync(validationResult);
 
+            // Mock fetching existing task
             _mockUnitOfWork.Setup(u => u.Tasks.GetTaskWithTagsByIdAsync(1))
                 .ReturnsAsync(existingTask);
 
+            // All tags exist
             _mockUnitOfWork.Setup(u => u.Tags.ExistsAsync(It.IsAny<int>()))
                 .ReturnsAsync(true);
+
+            // Mock update
+            _mockUnitOfWork.Setup(u => u.Tasks.UpdateAsync(It.IsAny<Core.Models.Task>()))
+                .Returns(Task.CompletedTask);
+
+            // Mock CompleteAsync to return Task<int>
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
+
+            // Mock fetching updated task with proper TaskTags
+            _mockUnitOfWork.Setup(u => u.Tasks.GetTaskWithTagsByIdAsync(1))
+                .ReturnsAsync(() =>
+                {
+                    existingTask.TaskTags = updateDto.TagIds.Select(tagId => new Core.Models.TaskTag
+                    {
+                        TaskId = existingTask.Id,
+                        TagId = tagId,
+                        Tag = new Core.Models.Tag { Id = tagId, Name = $"Tag{tagId}" }
+                    }).ToList();
+                    return existingTask;
+                });
 
             // Act
             var result = await _controller.UpdateTask(1, updateDto);
@@ -192,8 +243,14 @@ namespace TaskManager.Tests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnValue = Assert.IsType<TaskDto>(okResult.Value);
+
             Assert.Equal("Updated Task", returnValue.Title);
+            Assert.Equal(updateDto.FullName, returnValue.FullName);
+            Assert.Single(returnValue.Tags);
+            Assert.Equal(1, returnValue.Tags[0].Id);
+            Assert.Equal("Tag1", returnValue.Tags[0].Name);
         }
+
 
         [Fact]
         public async Task DeleteTask_WithValidId_ReturnsNoContent()

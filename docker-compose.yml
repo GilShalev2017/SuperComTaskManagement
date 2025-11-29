@@ -3,18 +3,18 @@ version: '3.8'
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: taskmanager-sqlserver
+    container_name: sqlserver
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Strong!Passw0rd
-      - MSSQL_PID=Developer
+      SA_PASSWORD: "Strong!Passw0rd"
+      ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
     volumes:
-      - sqlserver-data:/var/opt/mssql/data
-      - sqlserver-backups:/var/opt/mssql/backups
+      - sqlserver-data:/var/opt/mssql
+      # - ./sqlserver-init:/docker-entrypoint-initdb.d
     networks:
       - taskmanager-network
+
 
   rabbitmq:
     image: rabbitmq:3-management
