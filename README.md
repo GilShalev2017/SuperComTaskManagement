@@ -41,7 +41,7 @@ TaskManager/
 ### Clone the Repository
 ```bash
 git clone https://github.com/GilShalev2017/SuperComTaskManagement.git
-cd TaskManager
+cd  SuperComTaskManagement
 ```
 
 ### Quick Setup with Docker Compose (Recommended)
