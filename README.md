@@ -10,6 +10,53 @@ Full-stack task management application with .NET Core, React, SQL Server, and Ra
 - **Message Queue**: RabbitMQ (Docker)
 - **State Management**: Redux Toolkit
 
+### System Flow Diagram
+
+```
+┌─────────────────────┐
+│   Frontend (React)  │
+│  http://localhost:  │
+│        3000         │
+└──────────┬──────────┘
+           │
+           │ HTTP REST API calls
+           │
+           ▼
+┌─────────────────────┐
+│   Backend API       │
+│ .NET Core 9 Web API │
+│  http://localhost:  │
+│        7000         │
+└──────┬──────────────┘
+       │
+       │ CRUD operations (EF Core)
+       │
+       ▼
+┌─────────────────────┐         ┌──────────────────────┐
+│   SQL Server 2022   │         │  TaskManager.Service │
+│     (Docker)        │◄────────┤  Windows Service     │
+│   localhost:1433    │         │  Background Worker   │
+└─────────────────────┘         └──────┬───────────────┘
+                                       │
+                                       │ Publish/Consume
+                                       │ overdue tasks
+                                       ▼
+                                ┌──────────────────────┐
+                                │   RabbitMQ (Docker)  │
+                                │   Queue: task-       │
+                                │   reminders          │
+                                │   localhost:5672     │
+                                └──────────────────────┘
+
+Flow:
+1. User interacts with React Frontend
+2. Frontend calls Backend API (REST)
+3. API performs CRUD operations on SQL Server via EF Core
+4. Windows Service polls SQL Server every minute for overdue tasks
+5. Service publishes overdue task messages to RabbitMQ
+6. Service consumes messages from RabbitMQ and logs reminders
+```
+
 ## 📦 Project Structure
 ```
 TaskManager/
@@ -118,7 +165,6 @@ dotnet restore
 dotnet run
 ```
 
-
 **API will be available at:** http://localhost:7000
 
 **Swagger UI:** http://localhost:7000/swagger
@@ -135,6 +181,7 @@ dotnet restore
 # Run the service
 dotnet run
 ```
+
 **Service Log File:**
 The Windows Service logs all activities including overdue task checks (every minute) to:
 - **Location**: `Backend/TaskManager.Service/logs/taskmanager-service-YYYYMMDD.log`
@@ -148,8 +195,7 @@ The Windows Service logs all activities including overdue task checks (every min
   - Details of each published reminder (Task ID, Title, Assignee, Due Date, Priority, Tags)
   - RabbitMQ message publishing status
 
-**Note:** The service uses a "publish-once" algorithm - each overdue task is published to RabbitMQ only once per service run.
-Already-processed tasks are tracked in memory and won't be republished until the service restarts.
+**Note:** The service uses a "publish-once" algorithm - each overdue task is published to RabbitMQ only once per service run. Already-processed tasks are tracked in memory and won't be republished until the service restarts.
 
 ### Setup Frontend
 
@@ -543,14 +589,17 @@ docker-compose down -v
 
 ## 📞 Access Points Summary
 
-| Service | URL | Credentials |
-|---------|-----|-------------|
+| Service | URL/Location | Credentials |
+|---------|--------------|-------------|
 | **Frontend** | http://localhost:3000 | N/A |
 | **API** | http://localhost:7000 | N/A |
 | **Swagger** | http://localhost:7000/swagger | N/A |
 | **SQL Server** | localhost,1433 | User: `sa`<br>Password: `Strong!Passw0rd` |
 | **RabbitMQ** | localhost:5672 | User: `guest`<br>Password: `guest` |
 | **RabbitMQ UI** | http://localhost:15672 | User: `guest`<br>Password: `guest` |
+| **Service Logs** | `Backend/TaskManager.Service/logs/taskmanager-service-YYYYMMDD.log` | N/A |
+
+**Note:** Overdue task reminders are published to RabbitMQ and logged both to the log file and console output. See [Setup Windows Service](#setup-windows-service) section for details on the scanning algorithm.
 
 ## 📄 License
 
