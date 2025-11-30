@@ -531,8 +531,8 @@ docker-compose down -v
 | Service | URL | Credentials |
 |---------|-----|-------------|
 | **Frontend** | http://localhost:3000 | N/A |
-| **API** | https://localhost:7001 | N/A |
-| **Swagger** | https://localhost:7001/swagger | N/A |
+| **API** | http://localhost:7000 | N/A |
+| **Swagger** | http://localhost:7000/swagger | N/A |
 | **SQL Server** | localhost,1433 | User: `sa`<br>Password: `Strong!Passw0rd` |
 | **RabbitMQ** | localhost:5672 | User: `guest`<br>Password: `guest` |
 | **RabbitMQ UI** | http://localhost:15672 | User: `guest`<br>Password: `guest` |
