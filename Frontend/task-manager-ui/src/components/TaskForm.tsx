@@ -96,7 +96,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ open, onClose, taskId }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>{taskId ? 'Edit Task' : 'Create New Task'}</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
