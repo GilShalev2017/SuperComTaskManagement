@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// Vite uses VITE_ prefix for environment variables
-//TODO
-//const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:7001/api';
-const API_URL = process.env.REACT_APP_API_URL || 'https://localhost:7001/api';
+// Vite uses import.meta.env instead of process.env
+const API_URL = import.meta.env.VITE_API_URL || 'https://localhost:7001/api';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
