@@ -5,7 +5,7 @@ Full-stack task management application with .NET Core, React, SQL Server, and Ra
 ## 🏗️ Architecture
 
 - **Backend**: .NET Core 9.0 Web API
-- **Frontend**: React 18 with TypeScript + Vite
+- **Frontend**: React 19 with TypeScript + Vite
 - **Database**: SQL Server 2022 (Docker)
 - **Message Queue**: RabbitMQ (Docker)
 - **State Management**: Redux Toolkit
