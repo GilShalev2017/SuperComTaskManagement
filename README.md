@@ -135,6 +135,21 @@ dotnet restore
 # Run the service
 dotnet run
 ```
+**Service Log File:**
+The Windows Service logs all activities including overdue task checks (every minute) to:
+- **Location**: `Backend/TaskManager.Service/logs/taskmanager-service-YYYYMMDD.log`
+  - Example: `taskmanager-service-20241130.log`
+  - A new log file is created daily
+- **Console Output**: Overdue task reminders are also printed to the console in real-time
+- Monitor the log file to verify the service is running and checking for overdue tasks
+- Each scan logs:
+  - Timestamp of the check
+  - Number of overdue tasks found
+  - Details of each published reminder (Task ID, Title, Assignee, Due Date, Priority, Tags)
+  - RabbitMQ message publishing status
+
+**Note:** The service uses a "publish-once" algorithm - each overdue task is published to RabbitMQ only once per service run.
+Already-processed tasks are tracked in memory and won't be republished until the service restarts.
 
 ### Setup Frontend
 

@@ -44,7 +44,7 @@ const TaskList: React.FC<TaskListProps> = ({ onOpenForm }) => {
   const [flippedTasks, setFlippedTasks] = useState<{ [key: number]: boolean }>({});
   const [now, setNow] = useState(new Date());
   const [backgroundOption, setBackgroundOption] = useState<number>(0);
-  const VISIBLE_COUNT = 3;
+  const VISIBLE_COUNT = 2;
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);

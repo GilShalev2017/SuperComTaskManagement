@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Serilog;
+using Serilog.Events;
 using TaskManager.API.Validators;
 using TaskManager.Core.DTOs;
 using TaskManager.Data;
@@ -12,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)  // Suppress EF Core logs
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)  // Specifically target DB commands
     .WriteTo.Console()
     .WriteTo.File("logs/taskmanager-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
