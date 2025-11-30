@@ -52,19 +52,31 @@ builder.Services.AddScoped<IValidator<UpdateTaskDto>, UpdateTaskDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateTagDto>, CreateTagDtoValidator>();
 
 // CORS
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowReactApp",
+//        policy =>
+//        {
+//            policy.WithOrigins(
+//                    "http://localhost:3000",
+//                    "https://localhost:3000"
+//                  )
+//                  .AllowAnyHeader()
+//                  .AllowAnyMethod();
+//        });
+//});
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp",
+    options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.WithOrigins(
-                    "http://localhost:3000",
-                    "https://localhost:3000"
-                  )
+            policy.AllowAnyOrigin()
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
 });
+
 
 var app = builder.Build();
 
@@ -81,7 +93,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowReactApp");
+//app.UseCors("AllowReactApp");
+app.UseCors("AllowAll");
 
 // Global error handling middleware
 app.Use(async (context, next) =>

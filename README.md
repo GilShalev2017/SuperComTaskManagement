@@ -119,9 +119,9 @@ dotnet run
 ```
 
 
-**API will be available at:** https://localhost:7001
+**API will be available at:** http://localhost:7000
 
-**Swagger UI:** https://localhost:7001/swagger
+**Swagger UI:** http://localhost:7000/swagger
 
 ### Setup Windows Service
 
