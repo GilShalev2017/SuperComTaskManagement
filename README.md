@@ -10,6 +10,16 @@ Full-stack task management application with .NET Core, React, SQL Server, and Ra
 - **Message Queue**: RabbitMQ (Docker)
 - **State Management**: Redux Toolkit
 
+## 📸 Application Screenshots
+
+### Task Management Dashboard
+![Task List Dashboard](docs/images/task-dashboard.png)
+*Main dashboard displaying all tasks in a card-based layout with priority indicators, due dates, contact information, and tag management. Features include overdue task detection, time remaining countdown, and quick action buttons for edit and delete operations.*
+
+### Create/Edit Task Form
+![Create Task Form](docs/images/create-task-form.png)
+*Comprehensive task creation form with real-time validation for all fields including title, description, due date picker, priority selection (Low/Medium/High), contact details (name, phone, email), and multi-select tag assignment from predefined categories.*
+
 ### System Flow Diagram
 
 ```
@@ -155,6 +165,8 @@ docker ps | Select-String rabbitmq
 - Password: `guest`
 
 ### Setup Backend
+
+#### Option 1: Command Line (Quick Start)
 ```powershell
 cd Backend/TaskManager.API
 
@@ -169,9 +181,150 @@ dotnet run
 
 **Swagger UI:** http://localhost:7000/swagger
 
+#### Option 2: Visual Studio 2022 (Recommended for Debugging)
+
+1. **Open the Solution**
+   - Navigate to `Backend/` folder
+   - Double-click `TaskManager.sln` to open in Visual Studio 2022
+
+2. **Set Multiple Startup Projects**
+   - Right-click on the solution in Solution Explorer
+   - Select **"Configure Startup Projects..."**
+   - Choose **"Multiple startup projects"**
+   - Set both `TaskManager.API` and `TaskManager.Service` to **"Start"**
+   - Click **OK**
+
+3. **Run with Debugging**
+   - Press **F5** or click the green "Start" button
+   - This will launch both the API and the Windows Service simultaneously
+   - You can set breakpoints in any project and debug in real-time
+
+4. **Debug Individual Projects**
+   - Right-click on `TaskManager.API` or `TaskManager.Service`
+   - Select **"Debug" → "Start New Instance"**
+   - This allows debugging one project at a time
+
+**Benefits:**
+- Full debugging support with breakpoints
+- Immediate window for testing expressions
+- Watch variables in real-time
+- IntelliSense and code navigation
+- Integrated SQL Server Object Explorer
+
+#### Option 3: Visual Studio Code (Cross-Platform)
+
+1. **Open the Backend Folder**
+   ```powershell
+   cd Backend
+   code .
+   ```
+
+2. **Install Required Extensions**
+   - C# Dev Kit (Microsoft)
+   - C# (Microsoft)
+   - NuGet Package Manager
+
+3. **Configure Launch Settings**
+   
+   Create `.vscode/launch.json` in the Backend folder:
+   ```json
+   {
+     "version": "0.2.0",
+     "configurations": [
+       {
+         "name": "Launch API",
+         "type": "coreclr",
+         "request": "launch",
+         "preLaunchTask": "build-api",
+         "program": "${workspaceFolder}/TaskManager.API/bin/Debug/net9.0/TaskManager.API.dll",
+         "args": [],
+         "cwd": "${workspaceFolder}/TaskManager.API",
+         "stopAtEntry": false,
+         "serverReadyAction": {
+           "action": "openExternally",
+           "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+         },
+         "env": {
+           "ASPNETCORE_ENVIRONMENT": "Development"
+         }
+       },
+       {
+         "name": "Launch Service",
+         "type": "coreclr",
+         "request": "launch",
+         "preLaunchTask": "build-service",
+         "program": "${workspaceFolder}/TaskManager.Service/bin/Debug/net9.0/TaskManager.Service.dll",
+         "args": [],
+         "cwd": "${workspaceFolder}/TaskManager.Service",
+         "stopAtEntry": false,
+         "env": {
+           "DOTNET_ENVIRONMENT": "Development"
+         }
+       }
+     ],
+     "compounds": [
+       {
+         "name": "Launch API + Service",
+         "configurations": ["Launch API", "Launch Service"],
+         "presentation": {
+           "order": 1
+         }
+       }
+     ]
+   }
+   ```
+
+4. **Configure Build Tasks**
+   
+   Create `.vscode/tasks.json` in the Backend folder:
+   ```json
+   {
+     "version": "2.0.0",
+     "tasks": [
+       {
+         "label": "build-api",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+           "build",
+           "${workspaceFolder}/TaskManager.API/TaskManager.API.csproj",
+           "/property:GenerateFullPaths=true",
+           "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+       },
+       {
+         "label": "build-service",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+           "build",
+           "${workspaceFolder}/TaskManager.Service/TaskManager.Service.csproj",
+           "/property:GenerateFullPaths=true",
+           "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+       }
+     ]
+   }
+   ```
+
+5. **Run and Debug**
+   - Press **F5** or go to Run and Debug panel (Ctrl+Shift+D)
+   - Select **"Launch API + Service"** from the dropdown
+   - Click the green play button
+   - Set breakpoints by clicking in the gutter next to line numbers
+
+**Benefits:**
+- Lightweight and fast
+- Cross-platform (Windows, macOS, Linux)
+- Integrated terminal
+- Git integration
+- Debugging support with breakpoints
+
 ### Setup Windows Service
 
-Open a new terminal:
+#### Command Line
 ```powershell
 cd Backend/TaskManager.Service
 
@@ -199,7 +352,7 @@ The Windows Service logs all activities including overdue task checks (every min
 
 ### Setup Frontend
 
-Open a new terminal:
+#### Option 1: Command Line
 ```powershell
 cd Frontend/task-manager-ui
 
@@ -211,6 +364,122 @@ npm run dev
 ```
 
 **Frontend will be available at:** http://localhost:3000
+
+#### Option 2: Visual Studio Code (Recommended for React Development)
+
+1. **Open the Frontend Folder**
+   ```powershell
+   cd Frontend/task-manager-ui
+   code .
+   ```
+
+2. **Install Required Extensions**
+   - ESLint
+   - Prettier - Code formatter
+   - ES7+ React/Redux/React-Native snippets
+   - TypeScript Vue Plugin (Volar)
+
+3. **Install Dependencies**
+   - Open integrated terminal (Ctrl+` or View → Terminal)
+   ```bash
+   npm install
+   ```
+
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
+   - The app will open automatically at http://localhost:3000
+   - Hot Module Replacement (HMR) enabled - changes reflect instantly
+
+5. **Debug React Components**
+   - Install **"Debugger for Chrome"** extension
+   - Create `.vscode/launch.json`:
+   ```json
+   {
+     "version": "0.2.0",
+     "configurations": [
+       {
+         "type": "chrome",
+         "request": "launch",
+         "name": "Launch Chrome against localhost",
+         "url": "http://localhost:3000",
+         "webRoot": "${workspaceFolder}/src"
+       }
+     ]
+   }
+   ```
+   - Press **F5** to start debugging
+   - Set breakpoints in React components (.tsx files)
+
+**Benefits:**
+- React component debugging with breakpoints
+- Redux DevTools integration
+- Real-time error highlighting
+- Auto-formatting with Prettier
+- IntelliSense for TypeScript and React
+
+#### Running All Three Projects Together
+
+**Recommended Setup:**
+1. **Terminal 1**: Run Docker containers
+   ```powershell
+   docker-compose up -d
+   ```
+
+2. **Visual Studio 2022**: Run Backend API + Windows Service
+   - Open `Backend/TaskManager.sln`
+   - Set multiple startup projects
+   - Press F5
+
+3. **VS Code**: Run Frontend
+   - Open `Frontend/task-manager-ui`
+   - Run `npm run dev` in terminal
+
+This setup allows you to:
+- Debug backend C# code in Visual Studio
+- Debug frontend React/TypeScript code in VS Code
+- View real-time logs from all services
+- Set breakpoints across the entire stack
+
+## 🗄️ Database Management (Optional)
+
+### SQL Server Management Studio (SSMS)
+
+For inspecting the database, running queries, or troubleshooting:
+
+1. **Download SSMS** (if not installed)
+   - [Download from Microsoft](https://aka.ms/ssmsfullsetup)
+   - Free tool for managing SQL Server
+
+2. **Connect to Docker SQL Server**
+   - Open SSMS
+   - **Server name**: `localhost,1433`
+   - **Authentication**: SQL Server Authentication
+   - **Login**: `sa`
+   - **Password**: `Strong!Passw0rd`
+   - Click **Connect**
+
+3. **Useful Operations**
+   - View/edit data in tables
+   - Run the custom SQL query (see [Database Schema](#database-schema) section)
+   - Inspect table structures and relationships
+   - View query execution plans
+   - Monitor active connections
+
+**Quick Tips:**
+- Expand **Databases → TaskManagerDB → Tables** to see all tables
+- Right-click a table → **"Select Top 1000 Rows"** to view data
+- Use **New Query** button to run custom SQL queries
+- The [SQL Query for tasks with 2+ tags](#sql-query-tasks-with-at-least-two-tags) can be run directly here
+
+**Alternative Tools:**
+- **Azure Data Studio** - Cross-platform, modern UI
+- **DBeaver** - Free, cross-platform database tool
+- **Docker exec** (command line):
+  ```powershell
+  docker exec -it sqlserver2022 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Strong!Passw0rd"
+  ```
 
 ## 🐳 Docker Management
 
@@ -487,27 +756,6 @@ taskkill /PID <PID> /F
 # ports:
 #   - "1434:1433"  # Changed from 1433:1433
 # Then update connection string to use port 1434
-```
-
-### Database Migration Issues
-
-**Problem:** `dotnet ef database update` fails
-
-**Solution:**
-```powershell
-# Make sure SQL Server is running
-docker-compose ps
-
-# Delete existing migrations
-cd Backend/TaskManager.Data
-Remove-Item -Recurse -Force Migrations
-
-# Create new migration
-cd ../TaskManager.API
-dotnet ef migrations add InitialCreate --project ../TaskManager.Data
-
-# Apply migration
-dotnet ef database update --project ../TaskManager.Data
 ```
 
 ### Docker Compose Issues
