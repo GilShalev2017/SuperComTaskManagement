@@ -517,7 +517,7 @@ docker-compose down -v
 - xUnit, Moq (testing)
 
 ### Frontend
-- React 18
+- React 19
 - TypeScript
 - Redux Toolkit
 - Material-UI (MUI)
