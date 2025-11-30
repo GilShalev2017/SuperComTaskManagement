@@ -44,7 +44,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ open, onClose, taskId }) => {
     defaultValues: {
       title: '',
       description: '',
-      dueDate: new Date().toISOString().slice(0, 16),
+     dueDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 16),
       priority: 2,
       fullName: '',
       telephone: '',
@@ -63,7 +65,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ open, onClose, taskId }) => {
     if (selectedTask && taskId) {
       setValue('title', selectedTask.title);
       setValue('description', selectedTask.description || '');
-      setValue('dueDate', new Date(selectedTask.dueDate).toISOString().slice(0, 16));
+
+      const date = new Date(selectedTask.dueDate);
+      const localDateTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 16);
+      setValue('dueDate', localDateTime);
+      
       setValue('priority', selectedTask.priority);
       setValue('fullName', selectedTask.fullName);
       setValue('telephone', selectedTask.telephone);

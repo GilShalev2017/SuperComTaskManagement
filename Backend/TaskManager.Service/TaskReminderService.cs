@@ -74,21 +74,22 @@ namespace TaskManager.Service
                 throw;
             }
         }
-
         public async Task CheckAndPublishOverdueTasks()
         {
             try
             {
                 await using var context = await _contextFactory.CreateDbContextAsync();
 
-                var now = DateTime.UtcNow;
+                // FIX: Use local time instead of UTC
+                var now = DateTime.Now;  
+
                 var overdueTasks = await context.Tasks
                     .Include(t => t.TaskTags)
                     .ThenInclude(tt => tt.Tag)
                     .Where(t => t.DueDate < now && !_processedTasks.Contains(t.Id))
                     .ToListAsync();
 
-                _logger.LogInformation($"Found {overdueTasks.Count} overdue tasks");
+                _logger.LogInformation($"Found {overdueTasks.Count} overdue tasks at {now:yyyy-MM-dd HH:mm:ss}");
 
                 foreach (var task in overdueTasks)
                 {
@@ -101,7 +102,6 @@ namespace TaskManager.Service
                 _logger.LogError(ex, "Error checking and publishing overdue tasks");
             }
         }
-
         private void PublishTaskReminder(Core.Models.Task task)
         {
             try
@@ -117,7 +117,7 @@ namespace TaskManager.Service
                     Telephone = task.Telephone,
                     Priority = task.Priority,
                     Tags = task.TaskTags.Select(tt => tt.Tag.Name).ToList(),
-                    PublishedAt = DateTime.UtcNow
+                    PublishedAt = DateTime.Now
                 };
 
                 var json = JsonSerializer.Serialize(message);
