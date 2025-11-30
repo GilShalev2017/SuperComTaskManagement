@@ -114,9 +114,6 @@ cd Backend/TaskManager.API
 # Restore packages
 dotnet restore
 
-(Developers only — testers do NOT run this)
-dotnet ef database update --project ../TaskManager.Data --startup-project .
-
 # Run the API
 dotnet run
 ```
