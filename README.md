@@ -165,11 +165,8 @@ docker-compose down
 docker-compose logs -f
 
 # View logs for specific service
-docker-compose logs -f sqlserver
-docker-compose logs -f rabbitmq
-
-# Restart all containers
-docker-compose restart
+docker logs sqlserver2022
+docker logs rabbitmq
 
 # Check container status
 docker-compose ps
