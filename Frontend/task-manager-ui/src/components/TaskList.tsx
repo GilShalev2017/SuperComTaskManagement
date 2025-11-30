@@ -129,7 +129,7 @@ const TaskList: React.FC<TaskListProps> = ({ onOpenForm }) => {
           if (remainingMs < 24 * 60 * 60 * 1000 && !overdue) animationColor = 'gold';
 
           return (
-            <Grid size={{ xs: 12, md: 6 }} key={task.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={task.id}>
               <Box sx={{ perspective: "1000px", width: 370, height: 240 }}>
                 <Box sx={{ position: "relative", width: "100%", height: "100%", transition: "transform 0.6s", transformStyle: "preserve-3d", transform: flippedTasks[task.id] ? "rotateY(180deg)" : "none" }}>
                   <Card sx={{ position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden", border: overdue ? '2px solid #f44336' : '2px solid transparent', boxShadow: 2, cursor: 'pointer', transition: 'all 0.3s ease-in-out', background: getCardBackground(), '&:hover': { boxShadow: 10, transform: 'translateY(-4px)', borderColor: overdue ? '#f44336' : 'primary.main' } }}>
@@ -139,8 +139,8 @@ const TaskList: React.FC<TaskListProps> = ({ onOpenForm }) => {
                           <Typography variant="h6" component="div" sx={{ maxWidth: '230px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', cursor: 'default' }}>{task.title}</Typography>
                         </Tooltip>
                         <Box sx={{ opacity: 0.7, transition: 'opacity 0.2s ease-in-out' }}>
-                          <IconButton size="small" onClick={() => onOpenForm(task.id)} sx={{ '&:hover': { backgroundColor: 'primary.light', color: 'primary.contrastText' } }}><Edit /></IconButton>
-                          <IconButton size="small" color="error" onClick={() => handleDelete(task.id)} sx={{ '&:hover': { backgroundColor: 'error.main', color: 'error.contrastText' } }}><Delete /></IconButton>
+                          <IconButton size="small" onClick={() => onOpenForm(task.id)} sx={{ '&:hover': { backgroundColor: 'primary.light', color: 'primary.contrastText' } }} aria-label="Edit"><Edit /></IconButton>
+                          <IconButton size="small" color="error" onClick={() => handleDelete(task.id)} sx={{ '&:hover': { backgroundColor: 'error.main', color: 'error.contrastText' } }} aria-label="Delete"><Delete /></IconButton>
                           <IconButton size="small" onClick={() => setFlippedTasks(prev => ({ ...prev, [task.id]: true }))}><FlipToBackIcon fontSize="small" /></IconButton>
                         </Box>
                       </Box>

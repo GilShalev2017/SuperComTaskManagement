@@ -1,9 +1,10 @@
 // src/components/__tests__/TaskList.test.tsx
+/// <reference types="vitest" />
 import { render, screen, fireEvent } from '@testing-library/react';
+import { vi, describe, test, expect, beforeEach } from 'vitest';
 import TaskList from '../TaskList';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteTask } from '../../store/slices/taskSlice';
-import { vi, describe, test, expect, beforeEach } from 'vitest';
 
 // Mock hooks and slice
 vi.mock('../../store/hooks');
@@ -14,8 +15,8 @@ vi.mock('../../store/slices/taskSlice', () => ({
 const mockDispatch = vi.fn();
 
 // TypeScript-safe mocks
-(useAppDispatch as unknown as vi.Mock).mockReturnValue(mockDispatch);
-(useAppSelector as unknown as vi.Mock).mockImplementation((selector: any) =>
+(useAppDispatch as unknown as ReturnType<typeof vi.fn>).mockReturnValue(mockDispatch);
+(useAppSelector as unknown as ReturnType<typeof vi.fn>).mockImplementation((selector: any) =>
   selector({
     tasks: {
       tasks: [
@@ -58,7 +59,7 @@ describe('TaskList', () => {
   });
 
   test('opens delete dialog and confirms', () => {
-    (deleteTask as unknown as vi.Mock).mockReturnValue({
+    (deleteTask as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       unwrap: vi.fn().mockResolvedValue({}),
     });
 
