@@ -40,7 +40,7 @@ TaskManager/
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/TaskManager.git
+git clone https://github.com/GilShalev2017/SuperComTaskManagement.git
 cd TaskManager
 ```
 
