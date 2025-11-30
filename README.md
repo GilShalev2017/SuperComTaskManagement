@@ -62,6 +62,8 @@ docker-compose logs -f
 - SQL Server 2022 on port `1433`
 - RabbitMQ on port `5672`
 - RabbitMQ Management UI on port `15672`
+  (Username: guest
+  Password: guest)
 
 ### Alternative: Manual Docker Setup
 
