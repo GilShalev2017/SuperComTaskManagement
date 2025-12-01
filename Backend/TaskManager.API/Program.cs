@@ -133,4 +133,15 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// Custom server listening log
+var urls = builder.Configuration["ASPNETCORE_URLS"]
+    ?? builder.WebHost.GetSetting(WebHostDefaults.ServerUrlsKey)
+    ?? "https://localhost:7001;http://localhost:7000";
+
+Log.Information("===================================================");
+Log.Information("Task Manager API is now listening on: {Urls}", urls);
+Log.Information("Environment: {Environment}", app.Environment.EnvironmentName);
+Log.Information("Swagger UI available at: {SwaggerUrl}/swagger", urls.Split(';')[0]);
+Log.Information("===================================================");
+
 app.Run();

@@ -90,7 +90,7 @@ TaskManager/
 
 **Required:**
 - [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
-- [Node.js 18+](https://nodejs.org/)
+- [Node.js 22.12+](https://nodejs.org/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) ⚠️ **Must be installed and running**
 
 **Note:** Make sure Docker Desktop is running before proceeding with the setup.
