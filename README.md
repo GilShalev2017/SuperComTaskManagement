@@ -12,13 +12,20 @@ Full-stack task management application with .NET Core, React, SQL Server, and Ra
 
 ## 📸 Application Screenshots
 
-### Task Management Dashboard
-![Task List Dashboard](docs/images/task-dashboard.png)
-*Main dashboard displaying all tasks in a card-based layout with priority indicators, due dates, contact information, and tag management. Features include overdue task detection, time remaining countdown, and quick action buttons for edit and delete operations.*
+### Task Management Dashboard (Cards View)
+![Task List Cards View](docs/images/tasks-cards-view.png)
+*Tasks displayed in a card-based layout. Each card shows task title, description, priority, due date, contact information, and tags. Overdue tasks are highlighted with a red border, and a countdown timer shows remaining time until the due date. Cards can be flipped to show overdue/time remaining details. Users can edit, delete, or flip cards directly. Card backgrounds can be customized using the Card Background selector. The cards view allows sorting tasks via the table headers, reflected in the card order.*
+
+### Task Management Dashboard (Table View)
+![Task List Table View](docs/images/tasks-table-view.png)
+*Tasks displayed in a traditional table layout. Each row shows task name, due date, priority, status, and action buttons for edit/delete. Users can sort columns by clicking on the column headers (ascending/descending). Pagination controls are available for navigating large task lists. The search box above filters tasks dynamically based on title, description, contact details, or tags.*
+
+**View Toggle:**  
+Users can switch between **Cards View** and **Table View** using the toggle buttons above the task list. The cards view is represented by a `📊 Dashboard` icon (`DashboardTwoToneIcon`) and the table view by a `📋 Table` icon (`TableChartTwoToneIcon`). This allows a quick visual switch between detailed card layouts and compact table layouts.
 
 ### Create/Edit Task Form
 ![Create Task Form](docs/images/create-task-form.png)
-*Comprehensive task creation form with real-time validation for all fields including title, description, due date picker, priority selection (Low/Medium/High), contact details (name, phone, email), and multi-select tag assignment from predefined categories.*
+*Comprehensive task creation form with real-time validation for all fields including title, description, due date picker, priority selection (Low/Medium/High), contact details (name, phone, email), and multi-select tag assignment from predefined categories. Accessible via the "New Task" button or edit action in both cards and table views.*
 
 ### System Flow Diagram
 
