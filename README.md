@@ -140,7 +140,7 @@ docker run -d `
 
 **Verify SQL Server is running:**
 ```powershell
-docker ps | Select-String sqlserver2022
+docker ps | Select-String sqlserver
 ```
 
 #### RabbitMQ with Management Console
@@ -324,7 +324,7 @@ dotnet run
 
 ### Setup Windows Service
 
-#### Command Line
+#### Command Line (open in a new window)
 ```powershell
 cd Backend/TaskManager.Service
 
@@ -352,7 +352,7 @@ The Windows Service logs all activities including overdue task checks (every min
 
 ### Setup Frontend
 
-#### Option 1: Command Line
+#### Option 1: Command Line (open in a new window)
 ```powershell
 cd Frontend/task-manager-ui
 
@@ -476,10 +476,6 @@ For inspecting the database, running queries, or troubleshooting:
 **Alternative Tools:**
 - **Azure Data Studio** - Cross-platform, modern UI
 - **DBeaver** - Free, cross-platform database tool
-- **Docker exec** (command line):
-  ```powershell
-  docker exec -it sqlserver2022 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Strong!Passw0rd"
-  ```
 
 ## 🐳 Docker Management
 
@@ -495,8 +491,8 @@ docker-compose down
 docker-compose logs -f
 
 # View logs for specific service
-docker logs sqlserver2022
-docker logs rabbitmq
+docker logs sqlserver
+docker logs taskmanager-rabbitmq
 
 # Check container status
 docker-compose ps
@@ -518,9 +514,6 @@ docker logs sqlserver2022
 # Remove container (keeps volumes)
 docker rm sqlserver2022
 
-# Connect to SQL Server
-docker exec -it sqlserver2022 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Strong!Passw0rd"
-```
 
 #### RabbitMQ Commands
 ```powershell
@@ -546,7 +539,7 @@ docker exec -it rabbitmq bash
 docker-compose down
 
 # Or manually
-docker stop sqlserver2022 rabbitmq
+docker stop sqlserver taskmanager-rabbitmq
 ```
 
 ### Remove All Containers
@@ -558,7 +551,7 @@ docker-compose down
 docker-compose down -v
 
 # Or manually
-docker rm sqlserver2022 rabbitmq
+docker rm sqlserver taskmanager-rabbitmq
 ```
 
 ### View Running Containers
