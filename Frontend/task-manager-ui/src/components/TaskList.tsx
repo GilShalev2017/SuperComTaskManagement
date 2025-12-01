@@ -132,7 +132,7 @@ const TaskList: React.FC<TaskListProps> = ({ onOpenForm }) => {
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={task.id}>
               <Box sx={{ perspective: "1000px", width: 370, height: 240 }}>
                 <Box sx={{ position: "relative", width: "100%", height: "100%", transition: "transform 0.6s", transformStyle: "preserve-3d", transform: flippedTasks[task.id] ? "rotateY(180deg)" : "none" }}>
-                  <Card sx={{ position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden", border: overdue ? '2px solid #f44336' : '2px solid transparent', boxShadow: 2, cursor: 'pointer', transition: 'all 0.3s ease-in-out', background: getCardBackground(), '&:hover': { boxShadow: 10, transform: 'translateY(-4px)', borderColor: overdue ? '#f44336' : 'primary.main' } }}>
+                  <Card sx={{ position: "absolute", width: "100%", height: "100%", borderRadius: 2, backfaceVisibility: "hidden", border: overdue ? '2px solid #f44336' : '2px solid transparent', boxShadow: 2, cursor: 'pointer', transition: 'all 0.3s ease-in-out', background: getCardBackground(), '&:hover': { boxShadow: 10, transform: 'translateY(-4px)', borderColor: overdue ? '#f44336' : 'primary.main' } }}>
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                         <Tooltip title={task.title} placement="top" arrow>
@@ -145,9 +145,7 @@ const TaskList: React.FC<TaskListProps> = ({ onOpenForm }) => {
                         </Box>
                       </Box>
                       {task.description && (
-                        <Tooltip title={task.description} placement="top" arrow>
                           <Typography variant="body2" color="text.secondary" sx={{ mb: 1, maxWidth: "320px", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden", textOverflow: "ellipsis", cursor: "default" }}>{task.description}</Typography>
-                        </Tooltip>
                       )}
                       <Box sx={{ mb: 1 }}>
                         <Typography variant="body2"><strong>Contact:</strong> {task.fullName}</Typography>
@@ -169,7 +167,7 @@ const TaskList: React.FC<TaskListProps> = ({ onOpenForm }) => {
                     </CardContent>
                   </Card>
 
-                  <Card sx={{ position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden", transform: "rotateY(180deg)", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", p: 2, boxShadow: 2, background: getCardBackground() }}>
+                  <Card sx={{ position: "absolute", width: "100%", height: "100%", borderRadius: 2, backfaceVisibility: "hidden", transform: "rotateY(180deg)", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", p: 2, boxShadow: 2, background: getCardBackground() }}>
                     <IconButton size="small" onClick={() => setFlippedTasks(prev => ({ ...prev, [task.id]: false }))} sx={{ position: "absolute", top: 4, right: 4 }}>
                       <FlipToFrontIcon fontSize="small" />
                     </IconButton>

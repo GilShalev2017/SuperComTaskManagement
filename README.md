@@ -602,6 +602,13 @@ Located in:
 
 ## 🧪 Testing
 
+### Sample Data
+
+A SQL script is provided to quickly populate the database with sample tasks for testing purposes:
+- **Location**: `Database/Scripts/InsertSampleTasks.sql`
+- **Contents**: Sample tags, tasks with various priorities and due dates, N:N relationships, and overdue tasks for testing the reminder service
+- **Usage**: Run the script using SSMS or any SQL Server management tool
+
 ### Backend Tests
 ```powershell
 cd Backend/TaskManager.Tests
