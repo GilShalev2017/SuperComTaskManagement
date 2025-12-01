@@ -291,9 +291,14 @@ const TaskList: React.FC<TaskListProps> = ({ onOpenForm }) => {
                         <Typography variant="body2" fontWeight="500">{task.title}</Typography>
                         {task.description && (
                           <Typography variant="caption" color="text.secondary" display="block">
-                            {task.description.substring(0, 50)}{task.description.length > 50 && "..."}
+                            {task.description.substring(0, 80)}{task.description.length > 80 && "..."}
                           </Typography>
                         )}
+                         <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', mt: 0.5 }}>
+                          {task.tags.map(tag => (
+                            <Chip key={tag.id} label={tag.name} size="small" />
+                          ))}
+                        </Box>
                       </TableCell>
                       <TableCell>
                         {format(new Date(task.dueDate), "MMM dd, yyyy HH:mm")}
